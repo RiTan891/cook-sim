@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cupcake Cooking Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #ffe6e6;
+        }
+        .ingredients, .mixing-bowl, .oven, .done {
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #ff9999;
+            color: white;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #ff6666;
+            transform: scale(1.1);
+        }
+        .ingredients:hover, .mixing-bowl:hover, .oven:hover, .done:hover {
+            transform: scale(1.05);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes sparkle {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0; transform: scale(0.5); }
+        }
+        .fade {
+            animation: fadeIn 1s ease-in-out;
+        }
+        .cupcake-img {
+            display: none;
+            width: 200px;
+            margin-top: 20px;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .popup img {
+            width: 150px;
+        }
+        .popup button {
+            margin-top: 10px;
+            background-color: #ff6666;
+        }
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: gold;
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkle 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cupcake Cooking Game</h1>
+    <div class="ingredients fade">
+        <h2>Step 1: Choose Ingredients</h2>
+        <button onclick="addIngredient('Flour')">Flour</button>
+        <button onclick="addIngredient('Sugar')">Sugar</button>
+        <button onclick="addIngredient('Eggs')">Eggs</button>
+        <button onclick="addIngredient('Butter')">Butter</button>
+    </div>
+    <div class="mixing-bowl fade">
+        <h2>Step 2: Mix Ingredients</h2>
+        <p id="bowl">Bowl: Empty</p>
+        <button onclick="mixIngredients()">Mix</button>
+    </div>
+    <div class="oven fade">
+        <h2>Step 3: Bake</h2>
+        <button onclick="bake()">Bake</button>
+    </div>
+    <div class="done fade">
+        <h2>Step 4: Enjoy!</h2>
+        <p id="result"></p>
+    </div>
+
+    <div id="popup" class="popup">
+        <h2>Какой милаш!</h2>
+        <img src="Милый кекс.jpg" alt="Cute Cupcake">
+        <br>
+        <button onclick="closePopup()">Закрыть</button>
+    </div>
+
+    <script>
+        let bowl = [];
+
+        function addIngredient(ingredient) {
+            bowl.push(ingredient);
+            document.getElementById('bowl').innerText = 'Bowl: ' + bowl.join(', ');
+        }
+
+        function mixIngredients() {
+            if (bowl.length < 4) {
+                alert("You need all ingredients to mix!");
+                return;
+            }
+            document.getElementById('bowl').innerText = 'Bowl: Mixed Batter';
+        }
+
+        function bake() {
+            if (bowl.length < 4 || document.getElementById('bowl').innerText !== 'Bowl: Mixed Batter') {
+                alert("You need to mix the ingredients first!");
+                return;
+            }
+            document.getElementById('result').innerText = 'Congratulations! You made a perfect cupcake!';
+            document.getElementById('popup').style.display = 'block';
+            createSparklies();
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.querySelectorAll('.sparkle').forEach(s => s.remove());
+        }
+
+        function createSparklies() {
+            for (let i = 0; i < 20; i++) {
+                let sparkle = document.createElement('div');
+                sparkle.classList.add('sparkle');
+                document.body.appendChild(sparkle);
+                sparkle.style.left = `${50 + Math.random() * 30 - 15}%`;
+                sparkle.style.top = `${50 + Math.random() * 30 - 15}%`;
+                sparkle.style.animationDelay = `${Math.random()}s`;
+                setTimeout(() => sparkle.remove(), 1000);
+            }
+        }
+    </script>
+</body>
+</html>
